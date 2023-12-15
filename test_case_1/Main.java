@@ -19,6 +19,7 @@ class Main {
         }
     }
 
+    // Функция получения списка файлов
     private static void listFiles(String directory, Map<String, String> fileList) {
         File root = new File(directory);
         File[] files = root.listFiles();
@@ -29,13 +30,17 @@ class Main {
 
         for (File file : files) {
             if (file.isDirectory()) {
+                // Рекурсия, если файл оказался папкой
                 listFiles(file.getAbsolutePath(), fileList);
             } else {
                 fileList.put(file.getName(), file.getAbsolutePath());
             }
         }
     }
+
+    // Функция сортировки
     private static Map<String, String> sortFiles(Map<String, String> fileList) {
+        // Сортировка по названию файла
         Map<String, String> sortedFileMap = new TreeMap<>(fileList);
         Map<String, String> newSortedMap = sortedFileMap;
 
@@ -48,10 +53,12 @@ class Main {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     if (line.contains("require")) {
+                        // Получаем название файла из строки require 'FileName'
                         String message = line.replaceAll(".*'(.*)'.*", "$1");
                         int lastIndex = message.lastIndexOf('/');
                         String fileKey = message.substring(lastIndex + 1);
 
+                        // LinkedHashMap для того, чтобы сохранить порядок
                         Map<String, String> newFileMap = new LinkedHashMap<>();
 
                         // Переменная, которая указывает, был ли уже добавлен элемент hieghestFile
