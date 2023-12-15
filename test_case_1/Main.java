@@ -14,13 +14,12 @@ class Main {
         String rootDirectory = System.getProperty("user.dir") + "/root";
         Map<String, String> fileList = new HashMap<>();
 
+        // Создание списка файлов
         listFiles(rootDirectory, fileList);
+        // Сортировка списка
         fileList = sortFiles(fileList);
+        // Объединение контента файлов
         MergeFiles(fileList);
-
-        // for (Map.Entry<String, String> entry : fileList.entrySet()) {
-        //     System.out.println(entry.getKey() + " : " + entry.getValue());
-        // }
     }
 
     // Функция получения списка файлов
