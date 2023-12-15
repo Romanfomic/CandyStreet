@@ -1,5 +1,8 @@
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,10 +16,11 @@ class Main {
 
         listFiles(rootDirectory, fileList);
         fileList = sortFiles(fileList);
+        MergeFiles(fileList);
 
-        for (Map.Entry<String, String> entry : fileList.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
-        }
+        // for (Map.Entry<String, String> entry : fileList.entrySet()) {
+        //     System.out.println(entry.getKey() + " : " + entry.getValue());
+        // }
     }
 
     // Функция получения списка файлов
@@ -84,5 +88,44 @@ class Main {
             }
         }
         return newSortedMap;
+    }
+
+    // Функция объединения файлов
+    private static void MergeFiles(Map<String, String> fileList) {
+        try {
+            // Создаем или очищаем файл
+            BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"));
+            writer.close();
+
+            // Записываем содержимое файлов в указанном порядке
+            for (Map.Entry<String, String> entry : fileList.entrySet()) {
+                String filePath = entry.getValue();
+                File file = new File(filePath);
+
+                Scanner scanner = new Scanner(file);
+
+                String fileContent = "";
+                while (scanner.hasNextLine()) {
+                    String line = scanner.nextLine();
+                    fileContent += line + "\n";
+                }
+                scanner.close();
+
+                // Добавляем содержимое в файл
+                appendToFile(fileContent);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Функция записи текста в файл
+    private static void appendToFile(String content) throws IOException {
+        // Добавление содержимого в файл
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt", true))) {
+            writer.write(content);
+            writer.newLine();
+        }
     }
 }
