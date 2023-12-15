@@ -4,9 +4,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.Stack;
 import java.util.TreeMap;
 
 class Main {
@@ -46,6 +49,19 @@ class Main {
         // Сортировка по названию файла
         Map<String, String> sortedFileMap = new TreeMap<>(fileList);
         Map<String, String> newSortedMap = sortedFileMap;
+
+        Set<String> visited = new HashSet<>();
+        Stack<String> pathStack = new Stack<>();
+
+        for (Map.Entry<String, String> entry : sortedFileMap.entrySet()) {
+            String fileKey = entry.getKey();
+            if (!visited.contains(fileKey)) {
+                if (hasCyclicDependency(fileKey, sortedFileMap, visited, pathStack)) {
+                    System.out.println("Cyclic dependency detected. Dependency between files:" + pathStack);
+                    return sortedFileMap; // Возвращаем исходный порядок в случае циклической зависимости
+                }
+            }
+        }
 
         for (Map.Entry<String, String> entry : sortedFileMap.entrySet()) {
             try{
@@ -126,5 +142,30 @@ class Main {
             writer.write(content);
             writer.newLine();
         }
+    }
+
+    // Функция для проверки на циклические зависимости
+    private static boolean hasCyclicDependency(String fileKey, Map<String, String> fileMap, Set<String> visited, Stack<String> pathStack) {
+        if (visited.contains(fileKey)) {
+            return true; // Циклическая зависимость обнаружена
+        }
+
+        visited.add(fileKey);
+        pathStack.push(fileKey);
+
+        String requiredFileName = fileMap.get(fileKey);
+        if (requiredFileName != null) {
+            int lastIndex = requiredFileName.lastIndexOf('/');
+            String requiredFileKey = requiredFileName.substring(lastIndex + 1);
+
+            if (!visited.contains(requiredFileKey) && hasCyclicDependency(requiredFileKey, fileMap, visited, pathStack)) {
+                return true;
+            } else if (pathStack.contains(requiredFileKey)) {
+                return true;
+            }
+        }
+
+        pathStack.pop();
+        return false;
     }
 }
