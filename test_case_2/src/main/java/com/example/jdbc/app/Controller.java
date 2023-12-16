@@ -1,8 +1,8 @@
 package com.example.jdbc.app;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -16,5 +16,19 @@ public class Controller {
     @PostMapping
     public int createStudent(@RequestBody Student student) {
         return dao.createStudent(student);
+    }
+    @GetMapping
+    public Student getStudentById(@RequestParam int id) {
+        return dao.getStudentById(id);
+    }
+
+    @GetMapping("/all")
+    public List<Student> getStudents() {
+        return dao.getStudents();
+    }
+
+    @DeleteMapping
+    public void deleteStudentById(@RequestParam int id) {
+        dao.deleteStudentById(id);
     }
 }
