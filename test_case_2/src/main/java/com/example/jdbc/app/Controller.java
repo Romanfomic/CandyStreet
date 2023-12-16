@@ -13,21 +13,26 @@ public class Controller {
         this.dao = dao;
     }
 
-    @PostMapping
+    @CrossOrigin
+    @PostMapping("/createStudent")
     public int createStudent(@RequestBody Student student) {
         return dao.createStudent(student);
     }
-    @GetMapping
+
+    @CrossOrigin
+    @GetMapping("/getStudent")
     public Student getStudentById(@RequestParam int id) {
         return dao.getStudentById(id);
     }
 
-    @GetMapping("/all")
+    @CrossOrigin
+    @GetMapping("/getStudents")
     public List<Student> getStudents() {
         return dao.getStudents();
     }
 
-    @DeleteMapping
+    @CrossOrigin
+    @DeleteMapping("/deleteStudent")
     public void deleteStudentById(@RequestParam int id) {
         dao.deleteStudentById(id);
     }

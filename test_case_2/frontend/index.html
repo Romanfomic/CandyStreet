@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+</head>
+<body>
+<h1>Student Management</h1>
+
+<div>
+    <h2>Add Student</h2>
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" placeholder="Enter name">
+    </div>
+    <div>
+        <label for="patronymic">Patronymic:</label>
+        <input type="text" id="patronymic" placeholder="Enter patronymic">
+    </div>
+    <div>
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" placeholder="Enter surname">
+    </div>
+    <div>
+        <label for="birthdate">Birthdate:</label>
+        <input type="date" id="birthdate">
+    </div>
+    <div>
+        <label for="stgroup">Group:</label>
+        <input type="text" id="stgroup" placeholder="Enter group">
+    </div>
+    <div>
+        <label for="number">Number:</label>
+        <input type="number" id="number" placeholder="Enter number">
+    </div>
+    <button onclick="addStudent()">Add Student</button>
+</div>
+
+<div>
+    <h2>Delete Student</h2>
+    <label for="deleteId">Student ID:</label>
+    <input type="text" id="deleteId" placeholder="Enter student ID">
+    <button onclick="deleteStudent()">Delete Student</button>
+</div>
+
+<div>
+    <h2>Student List</h2>
+    <ul id="studentList"></ul>
+    <button onclick="getStudentList()">Refresh List</button>
+</div>
+
+<script>
+    // Функция для создания нового студента
+    function addStudent() {
+        const name = document.getElementById('name').value;
+        const surname = document.getElementById('surname').value;
+        const patronymic = document.getElementById('patronymic').value;
+        const birthdate = document.getElementById('birthdate').value;
+        const stgroup = document.getElementById('stgroup').value;
+        const number = document.getElementById('number').value;
+
+        fetch('http://localhost:8080/createStudent', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name ? name : "DefaultName",
+                surname: surname ? surname : "DefaultSurname",
+                patronymic: patronymic ? patronymic : "DefaultPatronymic",
+                birthdate: birthdate ? birthdate : "2023-01-01",
+                stgroup: stgroup ? stgroup : "DefaultGroup",
+                number: number ? number : "000"
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Added Student:', data);
+                getStudentList(); // Refresh the student list after adding a student
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Функция для удаления стужента по id
+    function deleteStudent() {
+        const studentId = document.getElementById('deleteId').value;
+
+        fetch(`http://localhost:8080/deleteStudent?id=${studentId}`, {
+            method: 'DELETE',
+        })
+            .then(response => {
+                console.log('Student Deleted');
+                getStudentList(); // Refresh the student list after deleting a student
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Функция для получения списка всех студентов
+    function getStudentList() {
+        fetch('http://localhost:8080/getStudents')
+            .then(response => response.json())
+            .then(students => {
+                const studentListElement = document.getElementById('studentList');
+                studentListElement.innerHTML = ''; // Clear the existing list
+
+                students.forEach(student => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                            id: ${student.id}<br>
+                            Identification number: ${student.number}<br>
+                            Name: ${student.name} ${student.patronymic} ${student.surname}<br>
+                            Birthdate: ${student.birthdate}<br>
+                            Group: ${student.stgroup}
+                        `;
+                    studentListElement.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Начальная загрузка списка стужентов
+    getStudentList();
+</script>
+</body>
+</html>
