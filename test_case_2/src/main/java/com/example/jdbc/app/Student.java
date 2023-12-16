@@ -2,7 +2,7 @@ package com.example.jdbc.app;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class Student {
@@ -10,7 +10,7 @@ public class Student {
     private String name;
     private String surname;
     private String patronymic;
-    private LocalDateTime birthdate;
+    private LocalDate birthdate;
     private String stgroup;
     private int number;
 }

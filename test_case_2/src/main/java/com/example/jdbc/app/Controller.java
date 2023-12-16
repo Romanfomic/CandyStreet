@@ -7,8 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
 
-    @PostMapping
-    public Student createStudent(@RequestBody Student student) {
+    private final StudentDao dao;
 
+    public Controller(StudentDao dao) {
+        this.dao = dao;
+    }
+
+    @PostMapping
+    public int createStudent(@RequestBody Student student) {
+        return dao.createStudent(student);
     }
 }
