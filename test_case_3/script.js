@@ -74,7 +74,7 @@ $(document).ready(function () {
             });
         }
 
-        // Инициализация выбора дат
+        // Инициализация выбора даты
         $("#datepicker").datepicker();
         $("#datepicker").on("change", function () {
             var selectedDateStr = $(this).val();
@@ -88,6 +88,19 @@ $(document).ready(function () {
             populateTaskList(fromTime, toTime, !onlyUncompleteTasks);
         });
 
+        $("#start-date, #end-date").datepicker({
+            onSelect: function (selectedDate) {
+              if (this.id === "start-date") {
+                DateBegin = new Date(selectedDate);
+                fromTime = DateBegin.getTime();
+              } else {
+                DateEnd = new Date(selectedDate);
+                toTime = DateEnd.getTime();
+              }
+      
+              populateTaskList(fromTime, toTime, !onlyUncompleteTasks);
+            }
+        });
 
         // Обработка нажатия клавиши в поле ввода
         $("#taskSearch").on("keyup", function (event) {
