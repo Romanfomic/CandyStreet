@@ -77,7 +77,7 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Added Student:', data);
-                getStudentList(); // Refresh the student list after adding a student
+                getStudentList(); // Перезагрузка списка после добавления
             })
             .catch(error => console.error('Error:', error));
     }
@@ -91,7 +91,7 @@
         })
             .then(response => {
                 console.log('Student Deleted');
-                getStudentList(); // Refresh the student list after deleting a student
+                getStudentList(); // Перезагрузка списка после удаление
             })
             .catch(error => console.error('Error:', error));
     }
@@ -102,7 +102,7 @@
             .then(response => response.json())
             .then(students => {
                 const studentListElement = document.getElementById('studentList');
-                studentListElement.innerHTML = ''; // Clear the existing list
+                studentListElement.innerHTML = ''; // Очистка списка
 
                 students.forEach(student => {
                     const listItem = document.createElement('li');

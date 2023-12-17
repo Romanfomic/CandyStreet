@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div>
+    <label for="taskSearch">Search Task:</label>
+    <input type="text" id="taskSearch">
+</div>
+
+<div>
+    <label for="datepicker">Select Date:</label>
+    <input type="text" id="datepicker">
+</div>
+
+<button id="todayTasks">Today's Tasks</button>
+<button id="weekTasks">This Week's Tasks</button>
+
+<div>
+    <label for="sortTasks">Sort Tasks by Date:</label>
+    <select id="sortTasks">
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+    </select>
+</div>
+
+<div>
+    <input type="checkbox" id="uncompletedTasks">
+    <label for="uncompletedTasks">Show Uncompleted Tasks Only</label>
+</div>
+
+<ul id="taskList">
+    <!-- Список задач загружается динамически -->
+</ul>
+
+<!-- Модальное окно задачи -->
+<div id="taskModal" style="display: none;">
+    <p id="taskDetails"></p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
